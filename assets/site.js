@@ -28,6 +28,27 @@
     d.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
   }
 
+  /* Navigacija: skriva se pri skrolovanju nadole, vraća pri skrolovanju nagore */
+  var bar = $('.site-bar');
+  if (bar) {
+    var lastY = scrollY, ticking = false;
+    var syncBar = function () {
+      ticking = false;
+      var y = Math.max(0, scrollY), diff = y - lastY;
+      bar.classList.toggle('stuck', y > 0);
+      if (y <= bar.offsetHeight) bar.classList.remove('away');
+      else if (Math.abs(diff) < 6) return;
+      else if (diff < 0) bar.classList.remove('away');
+      else if (!bar.querySelector('[aria-expanded="true"]') && !bar.querySelector(":focus-visible")) bar.classList.add('away');
+      lastY = y;
+    };
+    addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(syncBar); }
+    }, { passive: true });
+    bar.addEventListener('focusin', function () { bar.classList.remove('away'); });
+    syncBar();
+  }
+  
   /* Usluge: izbor iz liste i iz menija */
   var svRows = $$('.sa-row'), svPanels = $$('.sa-panel');
   function pickService(i) {
