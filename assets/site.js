@@ -49,17 +49,6 @@
     syncBar();
   }
   
-  /* Usluge: izbor iz liste i iz menija */
-  var svRows = $$('.sa-row'), svPanels = $$('.sa-panel');
-  function pickService(i) {
-    svRows.forEach(function (r, k) { r.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
-    svPanels.forEach(function (p, k) { p.hidden = k !== i; });
-  }
-  svRows.forEach(function (r, i) { r.addEventListener('click', function () { pickService(i); }); });
-  $$('[data-sv]').forEach(function (a) {
-    a.addEventListener('click', function () { pickService(Number(a.dataset.sv)); });
-  });
-
   /* Pre/posle klizači: posle puštanja se vraćaju na sredinu */
   $$('.wb-t').forEach(function (tile) {
     var range = $('.wb-range', tile), timer = 0;
